@@ -24,11 +24,10 @@ class AuthController {
 
             bcrypt.hash(password, 10, async (err, hsh) => {
                 if (err) {
-                    res.status(500).json({ message: 'Something bad happed', err });
-                    return;
+                    return res.status(500).json({ message: 'Something bad happened', err });
                 }
                 const role = await Role.findOne({ value: 'USER' })
-                await User.create({ username: username, password: hsh, roles: role })
+                await User.create({ username: username, password: hsh, roles: [role.value] })
                 res.send('succeeded');
             })
         } catch (err) {
